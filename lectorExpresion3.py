@@ -1,4 +1,5 @@
 import string
+from typing import List
 
 # simbologia 
 # 0 = se repite 0 o mas veces
@@ -33,20 +34,28 @@ def lector_expresion():
     general = []
     aux_array = []
     while(valor < len(oracion)):
+        print("este es el simbolo que examino",oracion[valor])
         if(oracion[valor] == "("):
             if(len(aux_array)>0):
                 general.append(aux_array.copy())
                 aux_array.clear()       ##comprobar si el bloque grande esta elevado a algo 
             valor,bloque = parentesis(valor+1)
-            if(oracion[valor+1] == "^"):
-                bloque.append(oracion[valor+1] +oracion[valor+2])
-                general.append(bloque)
-                valor+=2 
+            print("valor final bloque",valor)
+            if(valor+1 <len(oracion)):
+                if(oracion[valor+1] == "^"):
+                    bloque.append(oracion[valor+1] +oracion[valor+2])
+                    general.append(bloque)
+                    valor+=3 
             else:
-                general.append(bloque)
+              general.append(bloque)  
         else:
-            aux_array.append(oracion[valor])
-        valor+=1
+            if(oracion[valor] == "^"):
+                aux_array.append(oracion[valor]+oracion[valor+1])
+                valor+=2
+            else:
+                aux_array.append(oracion[valor])
+                valor+=1
+
     print(general)
 
 
@@ -100,18 +109,24 @@ def parentesis(valor):
                 print("acabe un bloque que encontre") 
                 if( oracion[valor +1]== "^"):
                     aux_array.append(oracion[valor+1] + oracion[valor+2])
-                    new_array.append(aux_array.copy())
+                    if(len(new_array)==0):
+                        new_array = aux_array.copy()
+                    else:
+                        new_array.append(aux_array.copy())
                     aux_array.clear()
                     valor +=3
                 else:    
                     print("pa saber que hay ",aux_array)
-                    new_array.append(aux_array.copy())
+                    if(len(new_array)==0):
+                        new_array = aux_array.copy()
+                    else:
+                        new_array.append(aux_array.copy())
                     aux_array.clear()
                     valor +=1
                 inicio -= 1
             else:
                 if(len(new_array) == 0):
-                    new_array.append(aux_array.copy())
+                    new_array = aux_array.copy()
                 print("ya termmine toodoooo")
                 bandera = False
         else:
@@ -121,13 +136,6 @@ def parentesis(valor):
     print("este es el arreglo final",new_array)
     return valor,new_array
         
-def limpiar_array(array):
-    for i in range(len(array)):
-        if(len(array) > 1):
-            if(type(array[i])== list):
-                array[i] =limpiar_array(array[i])
-        else:
-            return array[i]
             
 
 
