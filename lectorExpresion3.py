@@ -46,6 +46,7 @@ def cargar_expresion():
                     general.append(aux_array)
 
     print("este es el arreglo general \n",general)
+    return general
 
 
     
@@ -113,8 +114,40 @@ def parentesis(valor):
             valor +=1
     print("este es el arreglo final",new_array)
     return valor,new_array
-        
+
+def leerBloquesSimples(lista:list):
+    
+    for i in range(len(lista)):
+        tieneLista = False
+        for j in range(len(lista[i])):
+            if(type(lista[i][j])==list):
+                tieneLista = True
+
+
+        if(not tieneLista):
+            print("es un bloque simple",lista[i])
+            listaAuxiliar = []
+            cadenaAuxiliar = ""
+            for j in range(len(lista[i])):
+            
+                if(lista[i][j]=="+" ):
+                    if(j==0):
+                        print("es un bloque anidado con un or")
+                    else:
+                        # print("entro a la lista con el valor",cadenaAuxiliar)
+                        listaAuxiliar.append([cadenaAuxiliar])
+                        cadenaAuxiliar=""
+                else:
+                    # print("entroa agregar la letra", lista[i][j])
+                    # if(lista[i][j]=="^*"):  
+                    cadenaAuxiliar += lista[i][j]
+                    if(j==len(lista[i])-1):
+                        listaAuxiliar.append([cadenaAuxiliar])
+
+            print(listaAuxiliar)
             
 
 
-cargar_expresion()
+general = cargar_expresion()
+print("\n")
+leerBloquesSimples(general)
