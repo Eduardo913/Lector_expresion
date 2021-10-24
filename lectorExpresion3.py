@@ -24,21 +24,25 @@ def cargar_expresion():
                 general.append(aux_array.copy())
                 aux_array.clear()       ##comprobar si el bloque grande esta elevado a algo 
             valor,bloque = parentesis(valor+1)
+            print("este es el bloque final final",bloque)
             if(valor+1 <len(oracion)):
                 if(oracion[valor+1] == "^"):
                     aux = [bloque,oracion[valor+1] +oracion[valor+2]]
                     general.append(aux)
                     valor+=3 
+                else:
+                    general.append(bloque)  
             else:
-              general.append(bloque)  
+                general.append(bloque)  
         else:
             if(oracion[valor] == "^"):
                 aux_array.append(oracion[valor]+oracion[valor+1])
                 valor+=2
             else:
-                aux_array.append(oracion[valor])
+                if(oracion[valor]!= ")" and oracion[valor]!= "("):
+                    aux_array.append(oracion[valor])
                 valor+=1
-            if(valor>= len(oracion)):
+            if(valor>= len(oracion) and len(aux_array)>0):
                     general.append(aux_array)
 
     print("este es el arreglo general \n",general)
