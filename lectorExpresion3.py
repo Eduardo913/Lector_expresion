@@ -1,25 +1,10 @@
 import string
 from typing import List
 
-# simbologia 
-# 0 = se repite 0 o mas veces
-# 1 = se repite una o mas veces 
-# 2 = aparece awebo 1 vex
-# 3 = es un or 
 
 file = open("expresion.txt", "r")
 oracion = file.readlines()[0]
 file.close()
-
-# def leerArchivo(path):
-#     global oracion
-#     file = open(path, "r")
-#     oracion = file.readlines()
-#     file.close()
-
-# list_abecedario = list(string.ascii_lowercase);
-# list_numeros= [str(x) for x in range(10)]
-# list_simbolos = ["@","-","_",",","."]
 
 list_parentesis=[]
 list_suma = []
@@ -28,23 +13,21 @@ list_asterisco = []
 print(oracion)
 
 
-def lector_expresion():
+def cargar_expresion():
     print(len(oracion))
     valor = 0
     general = []
     aux_array = []
     while(valor < len(oracion)):
-        print("este es el simbolo que examino",oracion[valor])
         if(oracion[valor] == "("):
             if(len(aux_array)>0):
                 general.append(aux_array.copy())
                 aux_array.clear()       ##comprobar si el bloque grande esta elevado a algo 
             valor,bloque = parentesis(valor+1)
-            print("valor final bloque",valor)
             if(valor+1 <len(oracion)):
                 if(oracion[valor+1] == "^"):
-                    bloque.append(oracion[valor+1] +oracion[valor+2])
-                    general.append(bloque)
+                    aux = [bloque,oracion[valor+1] +oracion[valor+2]]
+                    general.append(aux)
                     valor+=3 
             else:
               general.append(bloque)  
@@ -54,9 +37,11 @@ def lector_expresion():
                 valor+=2
             else:
                 aux_array.append(oracion[valor])
+                if(valor== len(oracion)-1):
+                    general.append(aux_array)
                 valor+=1
 
-    print(general)
+    print("este es el arreglo general \n",general)
 
 
     
@@ -67,23 +52,18 @@ def parentesis(valor):
     aux_array = [] ## aux te permite guardar todo lo de los bloque chicos que se integrara  a new array 
     aux_aux = []
     while(bandera):
-        print(valor,oracion[valor-1])
         if(oracion[valor] == "^"):
             if(oracion[valor+1] == "+"):
-                print("entre a la elevacion")
                 aux_array.append(oracion[valor] + oracion[valor+1])
                 if (valor +2 >= len(oracion)-1):
                     # aqui termina
-                    print("aqui termino")
                     bandera = False
                 else:
                     valor +=2
             else:
                 aux_array.append(oracion[valor] + oracion[valor+1])
-                print("entre a la elevacion dos")
                 if (valor +2 >= len(oracion)-1):
                     # aqui termina
-                    print("aqui termino")
                     bandera = False
                 else:
                     valor +=2
@@ -92,11 +72,8 @@ def parentesis(valor):
             print("este es el arreglo final",new_array)
             
         elif(oracion[valor]== "("):
-            print("encontre otro bloque")
             if(len(aux_array) >0):
-                print("entre a recursividad")
                 valor, bloque = parentesis(valor+1)
-                print("sali de recursividad")
 
                 aux_array.append(bloque)
             else:
@@ -106,17 +83,16 @@ def parentesis(valor):
         elif(oracion[valor]==")"):
             if(inicio != 0):
                 # acabo el bloque chico 
-                print("acabe un bloque que encontre") 
                 if( oracion[valor +1]== "^"):
-                    aux_array.append(oracion[valor+1] + oracion[valor+2])
+                    # aux_array.append(oracion[valor+1] + oracion[valor+2])
                     if(len(new_array)==0):
-                        new_array = aux_array.copy()
+                        new_array = [aux_array.copy(),oracion[valor+1] + oracion[valor+2]]
                     else:
                         new_array.append(aux_array.copy())
+                        new_array.append(oracion[valor+1] + oracion[valor+2])
                     aux_array.clear()
                     valor +=3
                 else:    
-                    print("pa saber que hay ",aux_array)
                     if(len(new_array)==0):
                         new_array = aux_array.copy()
                     else:
@@ -127,11 +103,9 @@ def parentesis(valor):
             else:
                 if(len(new_array) == 0):
                     new_array = aux_array.copy()
-                print("ya termmine toodoooo")
                 bandera = False
         else:
             aux_array.append(oracion[valor])
-            print("encontre una letra",aux_array)
             valor +=1
     print("este es el arreglo final",new_array)
     return valor,new_array
@@ -139,4 +113,4 @@ def parentesis(valor):
             
 
 
-lector_expresion()
+cargar_expresion()
