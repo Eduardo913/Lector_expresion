@@ -37,6 +37,8 @@ def cargar_expresion():
                 valor+=2
             else:
                 aux_array.append(oracion[valor])
+                if(valor== len(oracion)-1):
+                    general.append(aux_array)
                 valor+=1
 
     print("este es el arreglo general \n",general)
