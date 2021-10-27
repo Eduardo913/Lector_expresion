@@ -13,7 +13,11 @@ resultado = tk.StringVar()
 
 # functions
 def comprobar():
-    resultado.set("hola")    
+    valor = er.comprobarER(exprecionR.get(),cadena.get())    
+    if(valor):
+        resultado.set("cadena valida")
+    else:
+        resultado.set("cadena invalida")
 
 # labels
 tk.Label(window,text="escribe la ER y despues la cadena a verificar",font=('Calibri', 14),background="#D3C3C3").place(x=90,y=50)
